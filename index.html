@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>isro API</title>
+    <link rel="stylesheet" href="search.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <body>
+        <div class="container">
+            <h2 style="color:black">Satellite Detailes of Diiferent Countries</h2><br>
+          <div class="nosub">
+            <input class="nosubmit" id="input" type="text" placeholder="Search Country...." >
+            <button class="btn btn-primary" type="submit" id="btn" onclick="search()">Search</button>
+          </div><br>
+          <!-- <p style="color:white">A satellite is an object that moves around a larger object. Earth is a satellite because it moves around the sun. The moon is a satellite because it moves around Earth. Earth and the moon are called "natural" satellites.</p> -->
+        </div>
+        <br>
+          <div class="contain" style="columns:3;"></div>
+    <script>
+        function search()
+        {
+            function satelite(dat)
+            {
+                var d=document.getElementsByClassName("nosubmit")[0].value;
+                console.log(d);
+                var data=dat["customer_satellites"];
+                var flag=0;
+                for (var i=1;i<data.length;i++)
+                {
+                    var card;
+                    var t=0;
+                    if(d==data[i]["country"])
+                    {
+                        flag=1;
+                        t=1;
+                        card=`<div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                            <h5 class="card-title">${data[i]["country"]}</h5>
+                            <p class="card-text"><b>ID:</b>${data[i]["id"]}
+                                <br><b>launch_date:</b>${data[i]["launch_date"]}<br>
+                                <b>mass:</b>${data[i]["mass"]}<br>
+                                <b>launcher:</b>${data[i]["mass"]}
+                                </p>
+                            </div>
+                        </div>`;
+                    }
+                    if(t==1){
+                    document.querySelector(".contain").innerHTML +=card;
+                    }
+
+                }
+                if(flag==0){
+                    alert("you entered country is not there in the list");
+                }
+                
+            }
+            var url="https://isro.vercel.app/api/customer_satellites";
+            fetch(url).then(res=>res.json()).then((res)=>{satelite(res);});
+            // fetch(url).then((res)=>res.json()).then((res)=>{console.log(res)});
+        }
+const countries=["AFGHANISTAN","ALBANIA","ALGERIA","ANDORRA","ANGOLA","ANTIGUA & BARBUDA","ARGENTINA","ARMENIA","AUSTRALIA","AUSTRIA","AZERBAIJAN","BAHAMAS","BAHRAIN","BANGLADESH","BARBADOS","BELARUS","BELGIUM","BELIZE",
+"BENIN","BHUTAN","BOLIVIA","BOSNIA & HERZEGOVINA","BOTSWANA","BRAZIL","BRUNEI","BULGARIA","BURKINA FASO","BURUNDI","CABO VERDE","CAMBODIA","CAMEROON","CANADA","CENTRAL AFRICAN REPUBLIC","CHAD","CHILE","CHINA","COLOMBIA",
+"COMOROS","CONGO","COSTA RICA","COTE D'IVOIRE","CROATIA","CUBA","CYPRUS","CZECHIA (Czech Republic)","DENMARK","DJIBOUTI","DOMINICA","DOMINICAN REPUBLIC","ECUADOR","EGYPT","EL SALVADOR","EQUATORIAL GUINEA","ERITREA","ESTONIA","ESWATINI (formerly Swaziland)","ETHIOPIA","FIJI","FINLAND","FRANCE","GABON","GAMBIA","GEORGIA","GERMANY","GHANA","GREECE","GRENADA","GUATEMALA","GUINEA","GUINEA-BISSAU","GUYANA","HAITI","HONDURAS","HUNGARY","ICELAND","INDIA","INDONESIA","IRAN","IRAQ","IRELAND","ISRAEL","ITALY","JAMAICA","JAPAN","JORDAN","KAZAKHSTAN","KENYA","KIRIBATI","KOSOVO","KUWAIT","KYRGYZSTAN","LAOS","LATVIA","LEBANON","LESOTHO","LIBERIA","LIBYA","LIECHTENSTEIN","LITHUANIA","LUXEMBOURG","MADAGASCAR","MALAWI","MALAYSIA","MALDIVES","MALI","MALTA","MARSHALL ISLANDS","MAURITANIA","MAURITIUS","MEXICO","MICRONESIA FEDERATED STATES OF","MOLDOVA","MONACO","MONGOLIA","MONTENEGRO","MOROCCO","MOZAMBIQUE","MYANMAR (Burma)","NAMIBIA","NAURU","NEPAL","NETHERLANDS","NEW ZEALAND","NICARAGUA","NIGER","NIGERIA","NORTH KOREA","NORTH MACEDONIA","SKOPJE","OSLO","OMAN","PAKISTAN","PALAU","PALESTINE","PANAMA","PAPUA NEW GUINEA","PARAGUAY","PERU","PHILIPPINES","POLAND","PORTUGAL","QATAR","ROMANIA","RUSSIA","RWANDA","SAINT KITTS & NEVIS","SAINT LUCIA","SAINT VINCENT & THE GRENADINES","SAMOA","SAN MARINO","SAO TOME & PRINCIPE","SAUDI ARABIA","SENEGAL","SERBIA","SEYCHELLES","SIERRA LEONE","SINGAPORE","SLOVAKIA","SOLOMON ISLANDS","SOMALIA","SOUTH AFRICA","SOUTH KOREA","SOUTH SUDAN","SPAIN","SRI LANKA","SUDAN","SURINAME","SWEDEN","SWITZERLAND","SYRIA","TAJIKISTAN","TANZANIA","THAILAND","TIMOR-LESTE","TOGO","TONGA","TRINIDAD & TOBAGO","TUNISIA","TURKIYE","TURKMENISTAN","TUVALU","UGANDA","UKRAINE","UNITED ARAB EMIRATES (UAE)","UNITED KINGDOM (UK)*","UNITED STATES OF AMERICA (USA)","URUGUAY","UZBEKISTAN","VANUATU","VATICAN CITY (Holy See)","VENEZUELA","VIETNAM","YEMEN","ZAMBIA","ZIMBABWE"];
+function autocomplete(input, list) {
+    input.addEventListener('input', function () {
+        closeList();
+        if (!this.value)
+            return;
+        suggestions = document.createElement('div');
+        suggestions.setAttribute('id', 'suggestions');
+        this.parentNode.appendChild(suggestions);
+        for (let i=0; i<list.length; i++) {
+            if (list[i].toUpperCase().includes(this.value.toUpperCase())) {
+                suggestion = document.createElement('div');
+                suggestion.innerHTML = list[i];
+                
+                suggestion.addEventListener('click', function () {
+                    input.value = this.innerHTML;
+                    closeList();
+                });
+                suggestion.style.cursor = 'pointer';
+
+                suggestions.appendChild(suggestion);
+            }
+        }
+
+    });
+
+    function closeList() {
+        let suggestions = document.getElementById('suggestions');
+        if (suggestions)
+            suggestions.parentNode.removeChild(suggestions);
+    }
+}
+autocomplete(document.getElementById('input'), countries);
+
+    </script>
+    </body>
+</html>
